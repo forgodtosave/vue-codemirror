@@ -10,7 +10,7 @@ import {
   formatString1lContent, formatString1lBrace, formatString1lEnd,
   formatString2lContent, formatString2lBrace, formatString2lEnd,
   ParenL, BraceL, BracketL
-} from "./parser.terms.js"
+} from "./python.terms.js"
 
 const newline = 10, carriageReturn = 13, space = 32, tab = 9, hash = 35, parenOpen = 40, dot = 46,
       braceOpen = 123, singleQuote = 39, doubleQuote = 34, backslash = 92

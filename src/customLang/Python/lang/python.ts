@@ -1,4 +1,4 @@
-import { parser } from '@lezer/python'
+import { parser } from '../parser/python.js'
 import { SyntaxNode } from '@lezer/common'
 import {
   delimitedIndent,

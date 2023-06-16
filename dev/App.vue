@@ -1,6 +1,9 @@
 <script setup lang="ts">
   import { reactive, shallowRef, computed, onMounted } from 'vue'
   import { javascript } from '@codemirror/lang-javascript'
+  import { python } from '@codemirror/lang-python'
+  import { pythonEdit } from '../src/customLang/Python/lang/python'
+  import { klipperConfig } from '../src/customLang/KlipperConfigLanguage/lang/klipperConfig'
   import { html } from '@codemirror/lang-html'
   import { json } from '@codemirror/lang-json'
   import { markdown } from '@codemirror/lang-markdown'
@@ -12,11 +15,14 @@
     javascript: javascript(),
     html: html(),
     json: json(),
+    python: python(),
+    pythonEdit: pythonEdit(),
+    klipperConfig: klipperConfig(),
     markdown: markdown()
   }
 
   const consoleLog = console.log
-  const code = shallowRef(`console.log('Hello World')`)
+  const code = shallowRef(`#num = 1\ntext = "test"`)
   const view = shallowRef()
   const config = reactive({
     disabled: false,
@@ -25,7 +31,7 @@
     autofocus: true,
     placeholder: 'input...',
     backgroundColor: 'red',
-    language: 'javascript',
+    language: 'python',
     theme: 'oneDark',
     phrases: 'en-us'
   })
@@ -121,7 +127,15 @@
             <option
               :value="option"
               :key="option"
-              v-for="option in ['javascript', 'html', 'json', 'markdown']"
+              v-for="option in [
+                'javascript',
+                'html',
+                'json',
+                'markdown',
+                'python',
+                'pythonEdit',
+                'klipperConfig'
+              ]"
             >
               {{ option }}
             </option>

@@ -3,6 +3,25 @@ import { EditorState, EditorStateConfig, Compartment, Extension, StateEffect } f
 import { EditorView, EditorViewConfig, ViewUpdate, keymap, placeholder } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { indentUnit } from '@codemirror/language'
+import { syntaxTree } from '@codemirror/language'
+import { linter, Diagnostic } from '@codemirror/lint'
+
+const parseLinter = linter((view) => {
+  let diagnostics: Diagnostic[] = []
+  syntaxTree(view.state)
+    .cursor()
+    .iterate((node) => {
+      if (node.type.isError) {
+        diagnostics.push({
+          from: node.from,
+          to: node.to,
+          severity: 'error',
+          message: 'Parse error: ' + JSON.stringify(view.state.sliceDoc(node.from, node.to))
+        })
+      }
+    })
+  return diagnostics
+})
 
 export interface CreateStateOptions extends EditorStateConfig {
   onChange(doc: string, viewUpdate: ViewUpdate): void
@@ -28,7 +47,8 @@ export const createEditorState = ({ onUpdate, onChange, onFocus, onBlur, ...conf
         if (viewUpdate.focusChanged) {
           viewUpdate.view.hasFocus ? onFocus(viewUpdate) : onBlur(viewUpdate)
         }
-      })
+      }),
+      parseLinter
     ]
   })
 }
